@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Application Submitted";
+}
+
+@model Mission06.Models.ApplicationResponse
+
+@if (Model.Rating == "R")
+{
+    <h2>Application recieved.</h2>
+    <h2>@Model.Title (@Model.Year) was added.</h2>
+    <h3>Wow, @Model.Title is not for Kids </h3>
+}
+else {
+<h2>Application recieved.</h2>
+<h2>@Model.Title (@Model.Year) was added.</h2>
+<h3>(You're welcome Mr. Hilton)</h3>
+ }
