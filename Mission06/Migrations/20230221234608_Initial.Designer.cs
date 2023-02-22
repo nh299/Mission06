@@ -8,7 +8,7 @@ using Mission06.Models;
 namespace Mission06.Migrations
 {
     [DbContext(typeof(MovieApplicationContext))]
-    [Migration("20230214054651_Initial")]
+    [Migration("20230221234608_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,9 +23,8 @@ namespace Mission06.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Director")
                         .IsRequired()
@@ -53,13 +52,15 @@ namespace Mission06.Migrations
 
                     b.HasKey("ApplicationId");
 
-                    b.ToTable("responses");
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Responses");
 
                     b.HasData(
                         new
                         {
                             ApplicationId = 1,
-                            Category = "Action",
+                            CategoryId = 1,
                             Director = "Joss Whedon",
                             Edited = false,
                             Rating = "PG-13",
@@ -69,7 +70,7 @@ namespace Mission06.Migrations
                         new
                         {
                             ApplicationId = 2,
-                            Category = "Action",
+                            CategoryId = 1,
                             Director = "George Lucas",
                             Edited = false,
                             Rating = "PG",
@@ -79,13 +80,78 @@ namespace Mission06.Migrations
                         new
                         {
                             ApplicationId = 3,
-                            Category = "Action",
+                            CategoryId = 1,
                             Director = "Mel Gibson",
                             Edited = false,
                             Rating = "R",
                             Title = "Braveheart",
                             Year = 1995
                         });
+                });
+
+            modelBuilder.Entity("Mission06.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            CategoryName = "Action/Adventure"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            CategoryName = "Comedy"
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            CategoryName = "Drama"
+                        },
+                        new
+                        {
+                            CategoryId = 4,
+                            CategoryName = "Family"
+                        },
+                        new
+                        {
+                            CategoryId = 5,
+                            CategoryName = "Horror/Suspense"
+                        },
+                        new
+                        {
+                            CategoryId = 6,
+                            CategoryName = "Miscellaneous"
+                        },
+                        new
+                        {
+                            CategoryId = 7,
+                            CategoryName = "Television"
+                        },
+                        new
+                        {
+                            CategoryId = 8,
+                            CategoryName = "VHS"
+                        });
+                });
+
+            modelBuilder.Entity("Mission06.Models.ApplicationResponse", b =>
+                {
+                    b.HasOne("Mission06.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
